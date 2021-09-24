@@ -1,12 +1,14 @@
 package com.pishi.calculator.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pishi.calculator.R
 import com.pishi.calculator.databinding.FragmentMainBinding
+import java.lang.Exception
 import kotlin.properties.Delegates
 
 class MainFragment : Fragment() {
@@ -53,6 +55,11 @@ class MainFragment : Fragment() {
             numberClicked(7)
         }
         binding.btnMultiply.setOnClickListener {
+            try {
+                multiplyClicked()
+            } catch (e: Exception){
+                Log.e("Empty Base Value","no base value")
+            }
         }
         binding.btnFour.setOnClickListener {
             numberClicked(4)
@@ -63,7 +70,14 @@ class MainFragment : Fragment() {
         binding.btnSix.setOnClickListener {
             numberClicked(6)
         }
-        binding.btnDivide.setOnClickListener { }
+        binding.btnDivide.setOnClickListener {
+            try {
+                divideClicked()
+            } catch (e: Exception){
+                Log.e("Empty Base Value","no base value")
+            }
+
+        }
         binding.btnOne.setOnClickListener {
             numberClicked(1)
         }
@@ -74,12 +88,28 @@ class MainFragment : Fragment() {
             numberClicked(3)
         }
         binding.btnPlus.setOnClickListener {
-            additionClicked()
+            try {
+                additionClicked()
+            } catch (e: Exception){
+                Log.e("Empty Base Value","no base value")
+            }
         }
-        binding.btnDoubleZero.setOnClickListener { }
-        binding.btnZero.setOnClickListener { }
+        binding.btnMinus.setOnClickListener {
+            try {
+                minusClicked()
+        } catch (e: Exception){
+            Log.e("Empty Base Value","no base value")
+        }
+        }
+        binding.btnZero.setOnClickListener {
+            numberClicked(0)
+        }
         binding.btnEquals.setOnClickListener {
-            equalClicked()
+            try {
+                equalClicked()
+            } catch (e: Exception){
+                Log.e("Empty Base Value","no base value")
+            }
         }
     }
 
@@ -110,8 +140,6 @@ class MainFragment : Fragment() {
         isMinus = true
         baseValue = binding.etIo.text.toString().toFloat()
         binding.etIo.text.clear()
-
-        if (numberClicked())
     }
 
     private fun addition (){
@@ -125,9 +153,24 @@ class MainFragment : Fragment() {
         secondValue = binding.etIo.text.toString().toFloat()
         val result = secondValue * baseValue
         binding.etIo.setText(result.toString())
+        isMultiply =false
     }
 
+    private fun minus (){
+        secondValue = binding.etIo.text.toString().toFloat()
+        val result = secondValue - baseValue
+        binding.etIo.setText(result.toString())
 
+        isMinus = false
+    }
+
+    private fun divide(){
+        secondValue = binding.etIo.text.toString().toFloat()
+        val result = secondValue/baseValue
+        binding.etIo.setText(result.toString())
+
+        isDivide = true
+    }
 
 
     private fun equalClicked (){
@@ -137,11 +180,16 @@ class MainFragment : Fragment() {
             }
             isMultiply ->{
                 multiply()
-
-            } else ->{
+            }
+            isDivide ->{
+                divide()
+            }
+            isMinus ->{
+                minus()
+            }
+            else ->{
                 binding.etIo.text.clear()
             }
-
         }
     }
 }
