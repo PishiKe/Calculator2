@@ -14,12 +14,7 @@ import kotlin.properties.Delegates
 class MainFragment : Fragment() {
 
     private lateinit var binding : FragmentMainBinding
-    private var baseValue = 0.0f
-    private var secondValue = 0.0f
-    private var isPlus = false
-    private var isMinus = false
-    private var isMultiply = false
-    private var isDivide = false
+
 
 
     override fun onCreateView(
