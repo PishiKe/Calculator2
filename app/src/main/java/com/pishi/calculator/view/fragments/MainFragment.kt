@@ -9,12 +9,19 @@ import android.view.ViewGroup
 import com.pishi.calculator.R
 import com.pishi.calculator.databinding.FragmentMainBinding
 import java.lang.Exception
+import kotlin.math.floor
 import kotlin.properties.Delegates
 
 class MainFragment : Fragment() {
 
     private lateinit var binding : FragmentMainBinding
-
+    private var baseValue = 0.0f
+    private var secondValue = 0.0f
+    private var isPlus = false
+    private var isMinus = false
+    private var isMultiply = false
+    private var isDivide = false
+    private var isMod = false
 
 
     override fun onCreateView(
@@ -38,7 +45,9 @@ class MainFragment : Fragment() {
         binding.btnClear.setOnClickListener {
             binding.etIo.text.clear()
         }
-        binding.btnMod.setOnClickListener { }
+        binding.btnMod.setOnClickListener {
+            modClicked()
+        }
         binding.btnPercentage.setOnClickListener {}
         binding.btnNine.setOnClickListener {
             numberClicked(9)
@@ -137,6 +146,12 @@ class MainFragment : Fragment() {
         binding.etIo.text.clear()
     }
 
+    private fun modClicked(){
+        isMod = true
+        baseValue = binding.etIo.text.toString().toFloat()
+        binding.etIo.text.clear()
+    }
+
     private fun addition (){
         secondValue = binding.etIo.text.toString().toFloat()
         var result = baseValue + secondValue
@@ -164,7 +179,25 @@ class MainFragment : Fragment() {
         val result = secondValue/baseValue
         binding.etIo.setText(result.toString())
 
-        isDivide = true
+        isDivide = false
+    }
+
+    private fun modulus(){
+        secondValue = binding.etIo.text.toString().toFloat()
+
+        val div : Float = baseValue/secondValue
+
+        if (div == 0.0f){
+            val result : Float = 0.0f
+            binding.etIo.setText(result.toString())
+
+        } else{
+            val result = floor(div)
+            binding.etIo.setText(result.toString())
+
+        }
+
+        isMod = false
     }
 
 
@@ -181,6 +214,9 @@ class MainFragment : Fragment() {
             }
             isMinus ->{
                 minus()
+            }
+            isMod ->{
+                modulus()
             }
             else ->{
                 binding.etIo.text.clear()
