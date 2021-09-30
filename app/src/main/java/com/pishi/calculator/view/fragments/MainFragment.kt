@@ -185,17 +185,8 @@ class MainFragment : Fragment() {
     private fun modulus(){
         secondValue = binding.etIo.text.toString().toFloat()
 
-        val div : Float = baseValue/secondValue
-
-        if (div == 0.0f){
-            val result : Float = 0.0f
-            binding.etIo.setText(result.toString())
-
-        } else{
-            val result = floor(div)
-            binding.etIo.setText(result.toString())
-
-        }
+        val result = baseValue%secondValue
+        binding.etIo.setText(result.toString())
 
         isMod = false
     }
